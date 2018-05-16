@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="us">
+<head>
+	<meta charset="utf-8">
+	<title>Word Processor</title>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="jquery-ui.css" rel="stylesheet">
+	<style type="text/css">
+	
+	
+	textarea {
+		resize: none;
+	}
+
+	body{
+		font-family: "Trebuchet MS", sans-serif;
+		margin: 50px;
+	}
+	
+	fieldset{ 
+		display:inline;
+	}
+	
+	#menu li {
+		float:left;
+		list-style:none;
+		margin-right:15px;
+		padding: 10px 0;
+	}
+	
+	#menu li a {
+		text-decoration:none;
+		font-family:'Kreon', serif;
+		font-size:16px;
+		color:#385f2d;
+		text-transform:uppercase;
+	}
+	#menu li a:hover {
+		color:#cd6a00;
+		-webkit-transition:All 0.5s ease;
+		-moz-transition:All 0.5s ease;
+		-o-transition:All 0.5s ease;
+	}
+
+	#menu li ul {
+		display:block;
+		position:absolute;
+		padding:5px 0px;
+		background:#f0f0f0;
+	}
+	#menu li ul li {
+		float:none;
+		width:200px;
+		margin-right:0px;
+		padding:5px 10px;
+	}
+	#menu li ul li a {
+		font-size:14px;
+	}
+	
+	#btn {
+		position: absolute;
+		right: -50px;
+		float: left;
+	}
+	
+	#FontSel{
+		width:120px;   
+	}
+	
+	#FontSize{
+		width:40px;   
+	}
+		
+	}
+	#icons {
+		margin: 0;
+		padding: 0;
+	}
+	#icons li {
+		margin: 2px;
+		position: relative;
+		padding: 4px 0;
+		cursor: pointer;
+		float: left;
+		list-style: none;
+	}
+	#icons span.ui-icon {
+		float: left;
+		margin: 0 4px;
+	}
+	.super{
+	 vertical-align: super;
+	 font-size: xx-small
+	 }
+	 
+	 .sub{
+	 vertical-align: sub;
+	 font-size: xx-small;
+	}
+	</style>
+</head>
+<body>
+<Fieldset id="Fieldset0">
+<div>
+
+<Legend> Word Processor </Legend>
+
+<!-- Menu -->
+<ul id="menu">
+	<li><div>File</div>
+		<ul>
+			<li><div>New</div></li>
+			<li><div>Open</div></li>
+			<li><div>Save</div></li>
+			<li><div>Save As...</div></li>
+			<li><div>Rename</div></li>
+			<li><div>Print</div></li>
+		</ul>
+	</li>
+	<li><div>Edit</div>
+		<ul>
+			<li value="Refresh Page" onClick="window.location.reload()"><div>Reset</div></li>
+			<li onclick="undoF();"><div>Undo</div></li>
+			<li><div>Redo</div></li>
+			<li><div>Cut</div></li>
+			<li><div>Copy</div></li>
+			<li><div>Paste</div></li>
+		</ul>
+	</li>
+	<li><div>Insert</div>
+		<ul>
+			<li><div>Insert Image</div></li>
+			<li><div>Insert Chart</div></li>
+			<li><div>Insert Text</div></li>
+		</ul>
+	</li>
+	<li><div>Format</div>
+		<ul>
+			<li onclick="undoF();"><div>Normal Text</div></li>
+			<li onclick="subscriptF();"><div>Subscript</div></li>
+			<li onclick="supersciptF();"><div>Superscript</div></li>
+		</ul>
+	</li>
+	<li><div>Tools</div>
+		<ul>
+			<li><div>Spell Check</div></li>
+			<li><div>Character Count</div></li>
+			<li><div>Word Count</div></li>
+			<li><div>Dictionary</div></li>
+			<li><div>Thesauraus</div></li>
+		</ul>
+	</li>
+	<li><div>Help</div>
+		<ul>
+			<li><div>No help is available!</div></li>
+		</ul>
+	</li>
+</ul>
+
+
+<br>
+<br>
+<br>
+<!--Tool Bar buttons-->
+<button type="button" class="btn" onclick="alert('Access denied')"><i class="fa fa-folder-open"></i></button>
+<button type="button" class="btn" onclick="alert('Saved')"><i class="fa fa-save"></i></button>
+<button type="button" class="btn" onclick="sub();"><i class="fa fa-file"></i></button>
+<button type="button" class="btn" onclick="undoF();" ><i class="fa fa-undo"></i></button>
+<button type="button" class="btn" onclick= ><i class="fa fa-copy"></i></button>
+<button type="button" class="btn" onclick= ><i class="fa fa-paste"></i></button>
+<button type="button" class="btn" onclick="alert('Printing')"><i class="fa fa-print"></i></button>
+<button type="button" class="btn" onclick= ><i class="fa fa-list-ul"></i></button>
+<button type="button" class="btn" onclick= ><i class="fa fa-list"></i></button>
+<button type="button" class="btn" onclick="boldF();"><i class="fa fa-bold"></i></button>
+<button type="button" class="btn" onclick="italicsF();" ><i class="fa fa-italic"></i></button>
+<button type="button" class="btn" onclick="underlineF();" ><i class="fa fa-underline"></i></button>
+<button type="button" class="btn" onclick="subscriptF();" ><i class="fa fa-subscript"></i></button>
+<button type="button" class="btn" onclick="supersciptF();" ><i class="fa fa-superscript"></i></button>
+
+<!-- Font Selctor -->
+<select onchange="myFunction(this);" id="FontSel">
+  <option>Georgia</option>
+  <option>Palatino Linotype</option>
+  <option>Book Antiqua</option>
+  <option>Times New Roman</option>
+  <option>Arial</option>
+  <option>Helvetica</option>
+  <option>Arial Black</option>
+  <option>Impact</option>
+  <option>Lucida Sans Unicode</option>
+  <option>Tahoma</option>
+  <option>Verdana</option>
+  <option>Courier New</option>
+  <option>Lucida Console</option>
+</select>
+
+<!-- Font Size -->
+<select onchange="fontSize(this);" id="FontSize">
+  <option>8px</option>
+  <option>9px</option>
+  <option>10px</option>
+  <option>11px</option>
+  <option>12px</option>
+  <option>13px</option>
+  <option>14px</option>
+  <option>15px</option>
+  <option>16px</option>
+  <option>17px</option>
+  <option>18px</option>
+  <option>19px</option>
+  <option>20px</option>
+  <option>21px</option>
+  <option>22px</option>
+  <option>23px</option>
+  <option>24px</option>
+</select>
+
+<!-- Buttons for text layout next to font size -->
+<button class="btn"><i class="fa fa-align-left"></i></button>
+<button class="btn"><i class="fa fa-align-justify"></i></button>
+<button class="btn"><i class="fa fa-align-right"></i></button>
+
+
+</div>
+</Fieldset>
+
+<!-- Text Box -->
+<br>
+<br>
+<Fieldset id="Fieldset0">
+<div id="textboxarea" style="width:726px" readonly="true" class="text" >Equations are short ways of representing complex ideas. in chemistry, equations tell us how many atoms of each element are needed to make a new molecule. For example, the chemical equation for water is H&#8322;O. this equation tells us that a molecule of water is made from two hydrogen atoms attached to one oxygen atom.
+
+The chemical equation for carbon dioxide is CO&#50;.</div>
+</textarea>
+</Fieldset>
+
+
+<script src="external/jquery/jquery.js"></script>
+<script src="jquery-ui.js"></script>
+<script>
+<!-- Enables Menu Functionality -->
+$( "#menu" ).menu({
+		position: {
+			my:'left top',
+			at:'left bottom'
+		}
+	});
+<!-- Changes the font of the textarea -->
+function myFunction(selectTag) {
+    var listValue = selectTag.options[selectTag.selectedIndex].text;
+    document.getElementById("textboxarea").style.fontFamily = listValue;
+	console.log(listValue);
+}
+<!-- changes the font size of the text area -->
+function fontSize(selectTag) {
+    var listValue = selectTag.options[selectTag.selectedIndex].text;
+    document.getElementById("textboxarea").style.fontSize = listValue;
+	console.log(listValue);
+}
+<!-- Bold button function (not working) -->
+function boldfunction(myP) {
+  if (document.getElementById) {
+    document.getElementById(myP).style.fontWeight = 'bold';
+  }
+  else if (document.all) {
+    document.all[id].style.fontWeight = 'bold';
+  }
+}
+// Hover states on the static widgets
+$( "#dialog-link, #icons li" ).hover(
+	function() {
+		$( this ).addClass( "ui-state-hover" );
+	},
+	function() {
+		$( this ).removeClass( "ui-state-hover" );
+	}
+);
+<!-- Changes highlighted text to bold -->
+function boldF() {
+    var sel, range, node;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = window.getSelection().getRangeAt(0);
+			console.log(range.startOffset, range.endOffset);
+            
+            var html = '<span style="font-weight:bold;">' + range + '</span>'
+            range.deleteContents();
+            
+            var el = document.createElement("div");
+            el.innerHTML = html;
+            var frag = document.createDocumentFragment(), node, lastNode;
+            while ( (node = el.firstChild) ) {
+                lastNode = frag.appendChild(node);
+            }
+            range.insertNode(frag);
+        }
+    } else if (document.selection && document.selection.createRange) {
+        range = document.selection.createRange();
+        range.collapse(false);
+        range.pasteHTML(html);
+    }
+}
+
+<!-- changes highlighted text to subscript -->
+function subscriptF() {
+    var sel, range, node;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = window.getSelection().getRangeAt(0);
+			console.log(JSON.stringify(range.startOffset, range.endOffset));
+            
+            var html = '<span class="sub">' + range + '</span>'
+            range.deleteContents();
+			console.log(html);
+            
+            var el = document.createElement("div");
+            el.innerHTML = html;
+            var frag = document.createDocumentFragment(), node, lastNode;
+            while ( (node = el.firstChild) ) {
+                lastNode = frag.appendChild(node);
+            }
+            range.insertNode(frag);
+        }
+    } else if (document.selection && document.selection.createRange) {
+        range = document.selection.createRange();
+        range.collapse(false);
+        range.pasteHTML(html);
+    }
+}
+
+<!-- changes highlighted text to superscript -->
+function supersciptF() {
+    var sel, range, node;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = window.getSelection().getRangeAt(0);
+			console.log(range.startOffset, range.endOffset);
+            
+            var html = '<span class="super">' + range + '</span>'
+            range.deleteContents();
+            
+            var el = document.createElement("div");
+            el.innerHTML = html;
+            var frag = document.createDocumentFragment(), node, lastNode;
+            while ( (node = el.firstChild) ) {
+                lastNode = frag.appendChild(node);
+            }
+            range.insertNode(frag);
+        }
+    } else if (document.selection && document.selection.createRange) {
+        range = document.selection.createRange();
+        range.collapse(false);
+        range.pasteHTML(html);
+    }
+
+}
+function undoF() {
+    var sel, range, node;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = window.getSelection().getRangeAt(0);
+            
+            var html = '<span style="text-decoration:normal;" style="text-style:normal font-size=normal font-weight=normal class=normal">' + range + '</span>'
+				range.deleteContents();
+		
+            var el = document.createElement("div");
+            el.innerHTML = html;
+            var frag = document.createDocumentFragment(), node, lastNode;
+            while ( (node = el.firstChild) ) {
+                lastNode = frag.appendChild(node);
+            }
+            range.insertNode(frag);
+        }
+    } else if (document.selection && document.selection.createRange) {
+        range = document.selection.createRange();
+        range.collapse(false);
+        range.pasteHTML(html);
+    }
+
+}
+
+<!-- Subscript Str Replace Method -->
+function sub() {
+    var sel, range, node, str, res;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = window.getSelection().getRangeAt(0);
+			console.log(range.startOffset, range.endOffset);
+				if (range.startOffset >=360 && range.endOffset <=365) {
+				var str = document.getElementById("textboxarea").innerHTML; 
+				var res = str.replace("2", "&#8322;");
+				document.getElementById("textboxarea").innerHTML = res;
+				console.log(str.replace);
+				}
+			}
+		}
+    }
+
+<!-- changes highlighted text to italics -->
+function italicsF() {
+    var sel, range, node;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = window.getSelection().getRangeAt(0);
+			console.log(range.startOffset, range.endOffset);
+            
+            var html = '<span style="font-style:italic;">' + range + '</span>'
+            range.deleteContents();
+            
+            var el = document.createElement("div");
+            el.innerHTML = html;
+            var frag = document.createDocumentFragment(), node, lastNode;
+            while ( (node = el.firstChild) ) {
+                lastNode = frag.appendChild(node);
+            }
+            range.insertNode(frag);
+        }
+    } else if (document.selection && document.selection.createRange) {
+        range = document.selection.createRange();
+        range.collapse(false);
+        range.pasteHTML(html);
+    }
+}
+
+<!-- changes highlighted text to underline -->
+function underlineF() {
+    var sel, range, node;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = window.getSelection().getRangeAt(0);
+            
+            var html = '<span style="text-decoration:underline;">' + range + '</span>'
+				range.deleteContents();
+		
+            var el = document.createElement("div");
+            el.innerHTML = html;
+            var frag = document.createDocumentFragment(), node, lastNode;
+            while ( (node = el.firstChild) ) {
+                lastNode = frag.appendChild(node);
+            }
+            range.insertNode(frag);
+        }
+    } else if (document.selection && document.selection.createRange) {
+        range = document.selection.createRange();
+        range.collapse(false);
+        range.pasteHTML(html);
+    }
+
+}
+
+
+
+</script>
+</body>
+</html>
