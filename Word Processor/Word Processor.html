@@ -135,7 +135,7 @@
 	<li><div>Format</div>
 		<ul>
 			<li onclick="undoF();"><div>Normal Text</div></li>
-			<li onclick="subscriptF();"><div>Subscript</div></li>
+			<li onclick="Substring();"><div>Subscript</div></li>
 			<li onclick="supersciptF();"><div>Superscript</div></li>
 		</ul>
 	</li>
@@ -172,7 +172,7 @@
 <button type="button" class="btn" onclick="boldF();"><i class="fa fa-bold"></i></button>
 <button type="button" class="btn" onclick="italicsF();" ><i class="fa fa-italic"></i></button>
 <button type="button" class="btn" onclick="underlineF();" ><i class="fa fa-underline"></i></button>
-<button type="button" class="btn" onclick="subscriptF();" ><i class="fa fa-subscript"></i></button>
+<button type="button" class="btn" onclick="Substring();" ><i class="fa fa-subscript"></i></button>
 <button type="button" class="btn" onclick="supersciptF();" ><i class="fa fa-superscript"></i></button>
 
 <!-- Font Selctor -->
@@ -228,10 +228,17 @@
 <Fieldset id="Fieldset0">
 <div id="textboxarea" style="width:726px" readonly="true" class="text" >Equations are short ways of representing complex ideas. in chemistry, equations tell us how many atoms of each element are needed to make a new molecule. For example, the chemical equation for water is H&#8322;O. this equation tells us that a molecule of water is made from two hydrogen atoms attached to one oxygen atom.
 
-The chemical equation for carbon dioxide is CO&#50;.</div>
+The chemical equation for carbon dioxide is CO2.
+</div>
 </textarea>
 </Fieldset>
 
+<br>
+<br>
+<fieldset>
+<div id="feedback"></div>
+<div id="answer"></div>
+</fieldset>
 
 <script src="external/jquery/jquery.js"></script>
 <script src="jquery-ui.js"></script>
@@ -381,25 +388,78 @@ function undoF() {
 
 }
 
-//<!-- Subscript Str Replace Method -->
-function sub() {
-    var sel, range, node, str, res;
-    if (window.getSelection) {
-        sel = window.getSelection();
-        if (sel.getRangeAt && sel.rangeCount) {
-			console.log(sel.getRangeAt, sel.rangeCount, sel.rangeCount)
+function Substring() {
+        var answers = [""];
+        var text = "";
+        if (window.getSelection) {
+            text = window.getSelection().toString();
+            console.log(text);
             range = window.getSelection().getRangeAt(0);
-			console.log(range.startOffset, range.endOffset);
-				if (range.startOffset >=360 && range.endOffset <=365) {
-				var str = document.getElementById("textboxarea").innerHTML; 
-				var res = str.replace("2", "&#8322;");
-				document.getElementById("textboxarea").innerHTML = res;
-				console.log(str.replace);
-				}
-			}
-		}
-    }
-
+            var str = document.getElementById("textboxarea").innerHTML;
+            switch (true) {
+                case (text.indexOf("0") >= 0):
+                    var res = str.replace("0", "&#8320;")
+                    document.getElementById("textboxarea").innerHTML = res;
+                    answers[0] = text;
+                    break;
+                case (text.indexOf("1") >= 0):
+                    var res = str.replace("1", "&#8321;")
+                    document.getElementById("textboxarea").innerHTML = res;
+                    answers[0] = text;
+                    break;
+                case (text.indexOf("2") >= 0):
+                    var res = str.replace("2", "&#8322;");
+                    document.getElementById("textboxarea").innerHTML = res;
+                    answers[0] = text;
+                    break;
+                case (text.indexOf("3") >= 0):
+                    var res = str.replace("3", "&#8323;");
+                    document.getElementById("textboxarea").innerHTML = res;
+                    answers[0] = text;
+                    break;
+                case (text.indexOf("4") >= 0):
+                    var res = str.replace("4", "&#8324;");
+                    document.getElementById("textboxarea").innerHTML = res;
+                    answers[0] = text;
+                    break;
+                case (text.indexOf("5") >= 0):
+                    var res = str.replace("5", "&#8325;");
+                    document.getElementById("textboxarea").innerHTML = res;
+                    answers[0] = text;
+                    break;
+                case (text.indexOf("6") >= 0):
+                    var res = str.replace("6", "&#8326;");
+                    document.getElementById("textboxarea").innerHTML = res;
+                    answers[0] = text;
+                    break;
+                case (text.indexOf("7") >= 0):
+                    var res = str.replace("7", "&#8327;");
+                    document.getElementById("textboxarea").innerHTML = res;
+                    answers[0] = text;
+                    break;
+                case (text.indexOf("8") >= 0):
+                    var res = str.replace("8", "&#8328;");
+                    document.getElementById("textboxarea").innerHTML = res;
+                    answers[0] = text;
+                    break;
+                case (text.indexOf("9") >= 0):
+                    var res = str.replace("9", "&#8329;");
+                    document.getElementById("textboxarea").innerHTML = res;
+                    answers[0] = text;
+                    break;
+                default:
+                    document.getElementById("textboxarea").innerHTML;
+                    document.getElementById("feedback").innerHTML = "Note: You can only apply subscript to a number!";
+                    answers[0] = text;
+            }
+        }
+        if (answers[0].length <= 1) { 
+        document.getElementById("answer").innerHTML = ("You subscripted the character: " + answers);
+        localStorage["answers"] = JSON.stringify(answers);
+        var retrievedAnswer = localStorage.getItem('answers');
+        console.log('retrievedAnswer: ', JSON.parse(retrievedAnswer));
+        }
+}
 //<!-- changes highlighted text to italics -->
 function italicsF() {
     var sel, range, node;
