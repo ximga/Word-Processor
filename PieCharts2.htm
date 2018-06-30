@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Pie Chart Examples</title>
+
+	<style type="text/css">
+	</style>
+</head>
+
+<body>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/data.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+	<input type='text' id='filterGrade' value='' width="20px;">
+	<input type='text' id='filterGender' value='' width="20px;">
+	<input type='text' id='filterEthnicity' value='' width="20px;">
+	<input type='text' id='filterSpEd' value='' width="20px;">
+	<input type='text' id='filterGT' value='' width="20px;">
+
+	<button id="wipe">Wipe</button>
+	<button id="reset" onclick="creator();">Reset</button>
+
+	<div id="chartContainer" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+
+	<script type="text/javascript">
+
+		var consolidated = [
+			['100100100', '09', 'M', 'White', 'N', 'Y'],
+			['100100101', '10', 'M', 'Hispanic', 'N', 'Y'],
+			['100100102', '09', 'F', 'Black', 'Y', 'N'],
+			['100100103', '11', 'M', 'White', 'N', 'Y'],
+			['100100104', '09', 'M', 'Hispanic', 'N', 'N'],
+			['100100105', '09', 'F', 'Black', 'Y', 'N'],
+			['100100106', '12', 'M', 'White', 'N', 'Y'],
+			['100100107', '11', 'M', 'Hispanic', 'N', 'N'],
+			['100100108', '10', 'F', 'Black', 'Y', 'N'],
+			['100100109', '12', 'M', 'White', 'N', 'Y'],
+			['100100110', '11', 'F', 'Hispanic', 'N', 'Y'],
+			['100100111', '12', 'F', 'Hispanic', 'N', 'Y']
+		];
+		var filtered = [];
+		var titles = [
+			[],
+			['stuGrades', 'filterGrade', 'Student Grades'],
+			['stuGenders', 'filterGender', 'Student Genders'],
+			['stuEthnicity', 'filterEthnicity', 'Student Ethnicity'],
+			['stuSpEd', 'filterSpEd', 'Student Special Ed'],
+			['stuGT', 'filterGT', 'Student GT']
+		];
+		var consolID = 0;
+		var consolGrade = 1;
+		var consolGender = 2;
+		var consolEthnicity = 3;
+		var consolSpEd = 4;
+		var consolGT = 5;
+
+		function showChart(dataSet, demographic) {
+			var counts = [];
+			var countsLabel = 0;
+			var countsCounter = 1;
+			var matched = false;
+			var include = true;
+			for (var row = 0; row < dataSet.length; row++) {
+				matched = false;
+				include = true;
+				//console.log("This is passed to checkFilter: ",dataSet[row][1]);
+				if (include) include = checkFilter(dataSet[row][demographic]);
+
+				if (include) {
+					for (var rowCounts = 0; rowCounts < counts.length; rowCounts++) {
+						if (new String(counts[rowCounts][countsLabel]).valueOf() === new String(dataSet[row][demographic]).valueOf()) {
+							//console.log("showChart match", new String(counts[rowCounts][countsLabel]).valueOf(), new String(dataSet[row][demographic]).valueOf() )
+							counts[rowCounts][countsCounter]++;
+							matched = true;
+						}
+					}
+					if (!matched) {
+						counts.push([dataSet[row][demographic], 1]);
+					}
+				}
+			}
+
+			function checkFilter(value) {
+				//console.log(value, "Value");
+				//console.log($('#' + (titles[demographic][1])).val(), "Filter");
+				if ($('#' + (titles[demographic][1])).val() == '') {
+					console.log("Returned true on null value");
+
+					return (true);
+				} else if ($('#' + (titles[demographic][1])).val() == value) {
+					console.log("Returned true on match");
+					return (true);
+				} else {
+					console.log("Didn't let through");
+					return (false);
+				}
+			}
+
+			$('#chartContainer').append('<div id=' + titles[demographic][0] + ' class="charts" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>');
+			//$('#chartContainer').append('<input type="text" id=' + titles[demographic][1] + ' class="filters" width="20px;">');
+			Highcharts.chart(titles[demographic][0], {
+				chart: {
+					plotBackgroundColor: null,
+					plotBorderWidth: null,
+					plotShadow: false,
+					type: 'pie'
+				},
+				title: {
+					text: titles[demographic][2]
+				},
+				tooltip: {
+					//pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+				},
+				plotOptions: {
+					pie: {
+						allowPointSelect: true,
+						cursor: 'pointer',
+						point: {
+							events: {
+								click: function () {
+									console.log(this.name);
+									$('#' + (titles[demographic][1])).prop('value', this.name);
+									$('.charts').remove();
+									creator();
+								}
+							}
+						},
+						dataLabels: {
+							enabled: true,
+							format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+							style: {
+								color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+							}
+						}
+					}
+				},
+				series: [{
+					name: 'Students',
+					colorByPoint: true,
+					data: counts,
+				}]
+			});
+			$("#wipe").click(function () {
+				$('#' + (titles[demographic][1])).prop('value', '');
+				$('.charts').remove();
+				//for ( let i = 0; i < 1; i++) {
+				//	creator();
+				//}
+			});
+		}
+
+		function creator() {
+			showChart(consolidated, consolGrade);
+			showChart(consolidated, consolGender);
+			showChart(consolidated, consolEthnicity);
+			showChart(consolidated, consolSpEd);
+			showChart(consolidated, consolGT);
+		}
+
+		creator();
+
+	</script>
+</body>
+
+</html>
